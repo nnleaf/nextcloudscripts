@@ -12,7 +12,7 @@ sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
 mount -t cifs //192.168.1.111/n1 /vault/n1 -o credentials=/home/nn/.smbvault
 mkdir /vault/n1/Files/NNServer/WEB.NextCloud_192.168.1.116/backup/nextcloud/
 rsync -azxh --inplace --info=progress2 --stats --exclude 'data/nn' /var/www/nextcloud/ /vault/n1/Files/NNServer/WEB.NextCloud_192.168.1.116/backup/nextcloud/
-tar -czvf /vault/n1/Files/NNServer/WEB.NextCloud_192.168.1.116/backup/nextcloud.tar.gz /vault/n1/Files/NNServer/WEB.NextCloud_192.168.1.116/backup/nextcloud/
+tar -czf /vault/n1/Files/NNServer/WEB.NextCloud_192.168.1.116/backup/nextcloud.tar.gz /vault/n1/Files/NNServer/WEB.NextCloud_192.168.1.116/backup/nextcloud/
 rm -r /vault/n1/Files/NNServer/WEB.NextCloud_192.168.1.116/backup/nextcloud/
 mysqldump --single-transaction -u nextclouduser nextcloud > /home/nn/nextcloud_backup.bak
 mv /home/nn/nextcloud_backup.bak /vault/n1/Files/NNServer/WEB.NextCloud_192.168.1.116/backup/nextcloud_backup.bak

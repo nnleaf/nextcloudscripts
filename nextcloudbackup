@@ -19,7 +19,7 @@ echo "--[ Backup /nextcloud directory ]--"
 echo "-----------------------------------"
 sudo mkdir /vault/n1/Files/NNServer/WEB.NextCloud_192.168.1.116/backup/nextcloud/
 sudo rsync -azxh --inplace --info=progress2 --stats --exclude 'data/nn' /var/www/nextcloud/ /vault/n1/Files/NNServer/WEB.NextCloud_192.168.1.116/backup/nextcloud/
-sudo tar -czvf /vault/n1/Files/NNServer/WEB.NextCloud_192.168.1.116/backup/nextcloud.tar.gz /vault/n1/Files/NNServer/WEB.NextCloud_192.168.1.116/backup/nextcloud/
+sudo tar -czf /vault/n1/Files/NNServer/WEB.NextCloud_192.168.1.116/backup/nextcloud.tar.gz /vault/n1/Files/NNServer/WEB.NextCloud_192.168.1.116/backup/nextcloud/
 sudo rm -r /vault/n1/Files/NNServer/WEB.NextCloud_192.168.1.116/backup/nextcloud/
 echo "-------------------------------"
 echo "--[ Backup MariaDB Database ]--"
