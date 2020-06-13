@@ -13,7 +13,7 @@ echo "--------------------------------"
 echo "--[ Turn on Maintenance Mode ]--"
 echo "--------------------------------"
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
-sudo mount -t cifs //192.168.1.111/n1 /vault/n1 -o credentials=/home/nn/.smbvault
+sudo mount -t cifs //10.0.100.10/n1 /vault/n1 -o credentials=/home/nn/.smbvault
 echo "-----------------------------------"
 echo "--[ Backup /nextcloud directory ]--"
 echo "-----------------------------------"
@@ -34,5 +34,5 @@ sudo mv /vault/n1/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup /vault/n1
 echo "-------------------"
 echo "--[ Cleaning up ]--"
 echo "-------------------"
-sudo umount -t cifs //192.168.1.111/n1
+sudo umount -t cifs //10.0.100.10/n1
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --off
