@@ -8,17 +8,17 @@
 #
 # 20200606 - Created script for cronjob to backup Nextcloud
 #
-sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
-mount -t cifs //10.0.100.10/n1 /vault/n1 -o credentials=/home/nn/.smbvault
-mkdir /vault/n1/Files/NNServer/WEB.NextCloud/backup/nextcloud/
-rsync -azxh --inplace --info=progress2 --stats --exclude 'data/nn' /var/www/nextcloud/ /vault/n1/Files/NNServer/WEB.NextCloud/backup/nextcloud/
-tar -czf /vault/n1/Files/NNServer/WEB.NextCloud/backup/nextcloud.tar.gz /vault/n1/Files/NNServer/WEB.NextCloud/backup/nextcloud/
-rm -r /vault/n1/Files/NNServer/WEB.NextCloud/backup/nextcloud/
+-u www-data php /var/www/nextcloud/occ maintenance:mode --on
+mount -t cifs //10.0.100.10/NNVault /nnvault -o credentials=/home/nn/.smbnnvault
+mkdir /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud/
+rsync -azxh --inplace --info=progress2 --stats --exclude 'data/nn' /var/www/nextcloud/ /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud/
+tar -czf /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud.tar.gz /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud/
+rm -r /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud/
 mysqldump --single-transaction -u nextclouduser nextcloud > /home/nn/nextcloud_backup.bak
-mv /home/nn/nextcloud_backup.bak /vault/n1/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup.bak
-mkdir /vault/n1/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup
-mv /vault/n1/Files/NNServer/WEB.NextCloud/backup/nextcloud.tar.gz /vault/n1/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup/nextcloud.tar.gz
-mv /vault/n1/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup.bak /vault/n1/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup/nextcloud_backup.bak
-mv /vault/n1/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup /vault/n1/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup_`date +"%Y-%m-%d_%H%M%S"`/
-umount -t cifs //10.0.100.10/n1
-sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --off
+mv /home/nn/nextcloud_backup.bak /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup.bak
+mkdir /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup
+mv /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud.tar.gz /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup/nextcloud.tar.gz
+mv /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup.bak /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup/nextcloud_backup.bak
+mv /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup_`date +"%Y-%m-%d_%H%M%S"`/
+umount -t cifs //10.0.100.10/NNVault
+-u www-data php /var/www/nextcloud/occ maintenance:mode --off
