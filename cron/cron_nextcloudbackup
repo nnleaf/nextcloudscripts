@@ -8,7 +8,7 @@
 #
 # 20200606 - Created script for cronjob to backup Nextcloud
 #
--u www-data php /var/www/nextcloud/occ maintenance:mode --on
+sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
 mount -t cifs //10.0.100.10/NNVault /nnvault -o credentials=/home/nn/.smbnnvault
 mkdir /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud/
 rsync -azxh --inplace --info=progress2 --stats --exclude 'data/nn' /var/www/nextcloud/ /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud/
@@ -21,4 +21,4 @@ mv /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud.tar.gz /nnvault/Files/
 mv /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup.bak /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup/nextcloud_backup.bak
 mv /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup_`date +"%Y-%m-%d_%H%M%S"`/
 umount -t cifs //10.0.100.10/NNVault
--u www-data php /var/www/nextcloud/occ maintenance:mode --off
+sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --off
