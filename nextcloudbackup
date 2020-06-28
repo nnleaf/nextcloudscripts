@@ -24,7 +24,7 @@ sudo rm -r /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud/
 echo "-------------------------------"
 echo "--[ Backup MariaDB Database ]--"
 echo "-------------------------------"
-mysqldump --single-transaction -u nextclouduser nextcloud > /home/nn/nextcloud_backup.bak
+sudo mysqldump --single-transaction -u nextclouduser nextcloud > /home/nn/nextcloud_backup.bak
 #Shift around files to create a dated backup
 sudo mv /home/nn/nextcloud_backup.bak /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup.bak
 sudo mkdir /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup
