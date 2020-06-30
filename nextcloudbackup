@@ -17,20 +17,20 @@ sudo mount -t cifs //10.0.100.10/NNVault /nnvault -o credentials=/home/nn/.smbnn
 echo "-----------------------------------"
 echo "--[ Backup /nextcloud directory ]--"
 echo "-----------------------------------"
-sudo mkdir /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud/
-sudo rsync -azxh --inplace --info=progress2 --stats --exclude 'data/nn' /var/www/nextcloud/ /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud/
-sudo tar -czf /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud.tar.gz /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud/
-sudo rm -r /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud/
+sudo mkdir /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud/
+sudo rsync -azxh --inplace --info=progress2 --stats --exclude 'data/nn' /var/www/nextcloud/ /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud/
+sudo tar -czf /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud.tar.gz /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud/
+sudo rm -r /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud/
 echo "-------------------------------"
 echo "--[ Backup MariaDB Database ]--"
 echo "-------------------------------"
 sudo mysqldump --single-transaction -u nextclouduser nextcloud > /home/nn/nextcloud_backup.bak
-#Shift around files to create a dated backup
-sudo mv /home/nn/nextcloud_backup.bak /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup.bak
-sudo mkdir /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup
-sudo mv /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud.tar.gz /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup/nextcloud.tar.gz
-sudo mv /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup.bak /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup/nextcloud_backup.bak
-sudo mv /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup /nnvault/Files/NNServer/WEB.NextCloud/backup/nextcloud_backup_`date +"%Y-%m-%d_%H%M%S"`/
+#Shift around to create a dated backup
+sudo mv /home/nn/nextcloud_backup.bak /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup.bak
+sudo mkdir /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup
+sudo mv /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud.tar.gz /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup/nextcloud.tar.gz
+sudo mv /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup.bak /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup/nextcloud_backup.bak
+sudo mv /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup_`date +"%Y-%m-%d_%H%M%S"`/
 echo "-------------------"
 echo "--[ Cleaning up ]--"
 echo "-------------------"
