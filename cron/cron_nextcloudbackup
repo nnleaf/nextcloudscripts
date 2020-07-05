@@ -14,7 +14,7 @@ mkdir /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud/
 rsync -azxh --inplace --info=progress2 --stats --exclude 'data/nn' /var/www/nextcloud/ /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud/
 tar -czf /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud.tar.gz /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud/
 rm -r /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud/
-sudo mysqldump --single-transaction -u nextclouduser nextcloud > /home/nn/nextcloud_backup.bak
+mysqldump --single-transaction -u nextclouduser nextcloud > /home/nn/nextcloud_backup.bak
 mv /home/nn/nextcloud_backup.bak /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup.bak
 mkdir /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup
 mv /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud.tar.gz /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup/nextcloud.tar.gz
