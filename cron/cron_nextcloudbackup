@@ -21,6 +21,6 @@ mv /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud.tar.gz /nnvault/Backu
 mv /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup.bak /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup/nextcloud_backup.bak
 mv /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup_`date +"%Y-%m-%d_%H%M%S"`/
 #Delete backups older than 30 days
-find /nnvault/Backup/NNServer/WEB.NextCloud/backup/ -mtime +30 -exec rm -r {} +
+find /nnvault/Backup/NNServer/WEB.NextCloud/backup/ -mtime +30 -exec rm -rf {} +
 umount -t cifs //10.0.100.10/NNVault
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --off
