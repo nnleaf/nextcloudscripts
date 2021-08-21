@@ -9,18 +9,17 @@
 # 20200606 - Created script for cronjob to backup Nextcloud
 #
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
-mount -t cifs //10.0.100.10/NNVault /nnvault -o credentials=/home/nn/.smbnnvault
-mkdir /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud/
-rsync -azxh --inplace --info=progress2 --stats --exclude 'data/nn' /var/www/nextcloud/ /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud/
-tar -czf /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud.tar.gz /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud/
-rm -r /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud/
+mount -t cifs //10.0.100.10/NextcloudBackup /nextcloudbackup -o credentials=/home/nn/.smbnextcloud
+rsync -azxh --inplace --info=progress2 --stats --exclude 'data/nn, data/ncri' /var/www/nextcloud/ /nextcloudbackup/backup/nextcloud/
+tar -czf /nextcloudbackup/backup/nextcloud.tar.gz /nextcloudbackup/backup/nextcloud/
+rm -rf /nextcloudbackup/backup/nextcloud/
 mysqldump --single-transaction -u nextclouduser nextcloud > /home/nn/nextcloud_backup.bak
-mv /home/nn/nextcloud_backup.bak /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup.bak
-mkdir /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup
-mv /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud.tar.gz /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup/nextcloud.tar.gz
-mv /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup.bak /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup/nextcloud_backup.bak
-mv /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup_`date +"%Y-%m-%d_%H%M%S"`/
+mv /home/nn/nextcloud_backup.bak /nextcloudbackup/backup/nextcloud_backup.bak
+mkdir /nextcloudbackup/backup/nextcloud_backup
+mv /nextcloudbackup/backup/nextcloud.tar.gz /nextcloudbackup/backup/nextcloud_backup/nextcloud.tar.gz
+mv /nextcloudbackup/backup/nextcloud_backup.bak /nextcloudbackup/backup/nextcloud_backup/nextcloud_backup.bak
+mv /nextcloudbackup/backup/nextcloud_backup /nextcloudbackup/backup/nextcloud_backup_`date +"%Y-%m-%d_%H%M%S"`/
 #Delete backups older than 30 days
-find /nnvault/Backup/NNServer/WEB.NextCloud/backup/ -mtime +30 -exec rm -rf {} +
-umount -t cifs //10.0.100.10/NNVault
+find /nextcloudbackup/backup/ -mtime +30 -exec rm -rf {} +
+umount -t cifs //10.0.100.10/NextcloudBackup
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --off

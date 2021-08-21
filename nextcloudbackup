@@ -8,33 +8,33 @@
 #
 # 20200606 - Created script to backup Nextcloud
 # 20200607 - Updated script with tar compression
+# 20210820 - Updated script for NextcloudBackup mount
 #
 echo "--------------------------------"
 echo "--[ Turn on Maintenance Mode ]--"
 echo "--------------------------------"
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
-sudo mount -t cifs //10.0.100.10/NNVault /nnvault -o credentials=/home/nn/.smbnnvault
+sudo mount -t cifs //10.0.100.10/NextcloudBackup /nextcloudbackup -o credentials=/home/nn/.smbnextcloud
 echo "-----------------------------------"
 echo "--[ Backup /nextcloud directory ]--"
 echo "-----------------------------------"
-sudo mkdir /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud/
-sudo rsync -azxh --inplace --info=progress2 --stats --exclude 'data/nn' /var/www/nextcloud/ /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud/
-sudo tar -czf /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud.tar.gz /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud/
-sudo rm -r /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud/
+sudo rsync -azxh --inplace --info=progress2 --stats --exclude 'data/nn, data/ncri' /var/www/nextcloud/ /nextcloudbackup/backup/nextcloud/
+sudo tar -czf /nextcloudbackup/backup/nextcloud.tar.gz /nextcloudbackup/backup/nextcloud/
+sudo rm -rf /nextcloudbackup/backup/nextcloud/
 echo "-------------------------------"
 echo "--[ Backup MariaDB Database ]--"
 echo "-------------------------------"
 sudo mysqldump --single-transaction -u nextclouduser nextcloud > /home/nn/nextcloud_backup.bak
 #Shift around to create a dated backup
-sudo mv /home/nn/nextcloud_backup.bak /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup.bak
-sudo mkdir /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup
-sudo mv /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud.tar.gz /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup/nextcloud.tar.gz
-sudo mv /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup.bak /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup/nextcloud_backup.bak
-sudo mv /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup /nnvault/Backup/NNServer/WEB.NextCloud/backup/nextcloud_backup_`date +"%Y-%m-%d_%H%M%S"`/
+sudo mv /home/nn/nextcloud_backup.bak /nextcloudbackup/backup/nextcloud_backup.bak
+sudo mkdir /nextcloudbackup/backup/nextcloud_backup
+sudo mv /nextcloudbackup/backup/nextcloud.tar.gz /nextcloudbackup/backup/nextcloud_backup/nextcloud.tar.gz
+sudo mv /nextcloudbackup/backup/nextcloud_backup.bak /nextcloudbackup/backup/nextcloud_backup/nextcloud_backup.bak
+sudo mv /nextcloudbackup/backup/nextcloud_backup /nextcloudbackup/backup/nextcloud_backup_`date +"%Y-%m-%d_%H%M%S"`/
 echo "-------------------"
 echo "--[ Cleaning up ]--"
 echo "-------------------"
 #Delete backups older than 30 days
-sudo find /nnvault/Backup/NNServer/WEB.NextCloud/backup/ -mtime +30 -exec rm -rf {} +
-sudo umount -t cifs //10.0.100.10/NNVault
+sudo find /nextcloudbackup/backup/ -mtime +30 -exec rm -rf {} +
+sudo umount -t cifs //10.0.100.10/NextcloudBackup
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --off
