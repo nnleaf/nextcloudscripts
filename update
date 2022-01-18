@@ -5,7 +5,7 @@
 #/_/|_/_/|_/  
 #
 # 20200529 - First script for updating NextCloud VM
-# 20220118 - Update script
+# 20220118 - Update script, added nextcloud updating
 #
 echo "------------------------------------------"
 echo "--[ Debian Version $(cat /etc/debian_version), Update? (y/n) ]--"
@@ -30,10 +30,17 @@ then
   echo "--------------------------"
   sudo apt autoremove
 fi
-echo "------------------------"
-echo "--[ Updating mlocate ]--"
-echo "------------------------"
-sudo updatedb
+echo "-------------------------------"
+echo "--[ Update Nextcloud? (y/n) ]--"
+echo "-------------------------------"
+read -p ""
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+  echo "------------------------"
+  echo "--[ Updating Nextcloud ]--"
+  echo "------------------------"
+  sudo -u www-data php /var/www/nextcloud/updater/updater.phar
+fi
 echo "-------------------------"
 echo "--[ Check Logs? (y/n) ]--"
 echo "-------------------------"
